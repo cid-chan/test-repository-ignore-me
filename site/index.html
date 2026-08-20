@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>f441 round trip</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: #0f1115;
+    color: #e6e8ee;
+  }
+  main {
+    width: min(46rem, 90vw);
+    padding: 2.5rem;
+    border: 1px solid #232733;
+    border-radius: 14px;
+    background: #151822;
+  }
+  h1 { margin: 0 0 .25rem; font-size: 1.6rem; letter-spacing: -.01em; }
+  p.lede { margin: 0 0 1.75rem; color: #9aa3b8; }
+  ol { margin: 0; padding-left: 1.25rem; }
+  li { margin: .4rem 0; }
+  code {
+    padding: .1rem .35rem;
+    border-radius: 5px;
+    background: #1e2330;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .9em;
+  }
+  footer { margin-top: 1.75rem; color: #6f7789; font-size: .875rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Round trip complete</h1>
+  <p class="lede">This page is a static file in a GitHub repository. It reached
+  your browser through the whole deployment path.</p>
+
+  <ol>
+    <li>A push landed on <code>main</code> in the client repository.</li>
+    <li>GitHub posted to <code>https://f441.net-up.de/gh-webhook</code>, signed
+        with the row's webhook secret.</li>
+    <li>The receiver matched the secret, then ran
+        <code>f441ctl deploy round-trip-test my-container</code>.</li>
+    <li>f441 pulled the repository with the machine's deploy key into
+        <code>/srv/repo</code> inside the Incus machine.</li>
+    <li>Podman applied <code>docker-compose.yml</code> in that machine and
+        published port 80.</li>
+    <li>nginx on the <code>forwarding</code> machine proxied
+        <code>round-trip-test.f441.net-up.de</code> to
+        <code>10.40.0.58:80</code>.</li>
+  </ol>
+
+  <footer>Project <code>round-trip-test</code>, machine
+  <code>my-container</code>, served by nginx in Podman.</footer>
+</main>
+</body>
+</html>

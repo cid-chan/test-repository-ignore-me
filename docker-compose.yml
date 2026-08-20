@@ -1,0 +1,13 @@
+services:
+  web:
+    # The registry is explicit: podman has no default and would otherwise ask.
+    image: docker.io/library/nginx:1.29-alpine
+    restart: always
+    # f441's nginx proxies this machine on port 80, so the workload publishes 80.
+    ports:
+      - "80:80"
+    volumes:
+      - ./site:/usr/share/nginx/html:ro
+    # Output goes to the machine's journald, which f441 collects.
+    logging:
+      driver: journald
