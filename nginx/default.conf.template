@@ -1,0 +1,15 @@
+# The nginx image runs envsubst over this file at container start and writes the
+# result to /etc/nginx/conf.d/default.conf. Only variables that exist in the
+# environment are replaced, so nginx variables such as $host stay intact.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name _;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # The value arrives from the client's env file, which f441ctl stages at
+    # /srv/env and hands to podman-compose at deploy time.
+    add_header X-Deploy-Note "${SITE_HEADER}" always;
+}

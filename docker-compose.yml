@@ -6,8 +6,15 @@ services:
     # f441's nginx proxies this machine on port 80, so the workload publishes 80.
     ports:
       - "80:80"
+    environment:
+      # f441ctl passes every /srv/env/*.env file to podman-compose, which
+      # interpolates them here. A missing value fails the deploy instead of
+      # serving an empty header.
+      SITE_HEADER: ${SITE_HEADER:?set SITE_HEADER in an env file}
     volumes:
       - ./site:/usr/share/nginx/html:ro
+      # envsubst turns this template into the active server block at start.
+      - ./nginx:/etc/nginx/templates:ro
     # Output goes to the machine's journald, which f441 collects.
     logging:
       driver: journald
